@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 - 资源分享站</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 头部 -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">
+        <div class="logo-icon">📦</div>
+        <span>资源分享站</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">← 返回首页</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 登录界面 -->
+  <div class="container" id="loginPanel">
+    <div class="login-container">
+      <h1>🔐 后台管理</h1>
+      <p>请输入管理密码</p>
+      <div class="login-form">
+        <input type="password" id="passwordInput" placeholder="输入密码" autocomplete="current-password">
+        <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;">登 录</button>
+        <div class="login-error" id="loginError"></div>
+        <div class="lockout-timer" id="lockoutTimer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 管理面板 -->
+  <div class="container" id="adminPanel" style="display:none;">
+    <div style="padding-top: var(--space-xl);">
+      <div class="admin-header">
+        <h2>📋 资源管理</h2>
+        <div class="admin-actions">
+          <span class="mod-count" id="modCount"></span>
+          <button class="btn btn-primary" id="addResourceBtn">+ 新增资源</button>
+          <button class="btn btn-outline" id="exportBtn">📥 导出 JSON</button>
+          <button class="btn btn-danger btn-sm" id="discardBtn">↩ 撤销所有修改</button>
+          <button class="btn btn-outline btn-sm" id="logoutBtn">退出登录</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>标题</th>
+              <th>分类</th>
+              <th>日期</th>
+              <th>推荐</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="resourceTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑表单模态框 -->
+  <div class="modal-overlay form-modal" id="formModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span style="font-weight:600;" id="formTitle">新增资源</span>
+        <button class="modal-close" id="formModalClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="resourceForm" autocomplete="off">
+          <div class="form-group">
+            <label>标题 *</label>
+            <input type="text" id="fTitle" required placeholder="资源标题">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>分类 *</label>
+              <select id="fCategory" required>
+                <!-- JS 动态填充 -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label>日期</label>
+              <input type="date" id="fDate">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>描述</label>
+            <textarea id="fDesc" placeholder="资源描述..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>封面图 URL</label>
+              <input type="url" id="fImage" placeholder="https://...">
+              <div class="image-preview" id="imagePreview">
+                <span class="placeholder">输入URL后预览</span>
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label>文件大小</label>
+                <input type="text" id="fSize" placeholder="如: 2.5GB">
+              </div>
+              <div class="form-group">
+                <label>适用平台</label>
+                <input type="text" id="fPlatform" placeholder="如: PC / Android">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>标签（用逗号分隔）</label>
+            <input type="text" id="fTags" placeholder="模拟经营, 像素风, 单机">
+          </div>
+          <div class="form-group">
+            <label style="display:flex;justify-content:space-between;align-items:center;">
+              <span>下载链接</span>
+              <button type="button" class="btn btn-outline btn-sm" id="addLinkBtn">+ 添加链接</button>
+            </label>
+            <div class="links-editor" id="linksEditor">
+              <!-- JS 动态填充 -->
+            </div>
+          </div>
+          <div class="form-group" style="display:flex;align-items:center;gap:var(--space-sm);">
+            <input type="checkbox" id="fFeatured" style="width:auto;">
+            <label for="fFeatured" style="margin:0;">推荐（在首页推荐区展示）</label>
+          </div>
+        </form>
+        <div class="form-actions">
+          <button class="btn btn-outline" id="formCancelBtn">取消</button>
+          <button class="btn btn-primary" id="formSaveBtn">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除确认 -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal" style="max-width:400px;">
+      <div class="modal-header">
+        <span style="font-weight:600;">确认删除</span>
+        <button class="modal-close" id="deleteModalClose">✕</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <p style="margin-bottom:var(--space-md);">确定要删除这个资源吗？此操作不可恢复。</p>
+        <p style="color:var(--accent);font-weight:600;" id="deleteItemTitle"></p>
+        <div style="display:flex;justify-content:center;gap:var(--space-md);margin-top:var(--space-lg);">
+          <button class="btn btn-outline" id="deleteCancelBtn">取消</button>
+          <button class="btn btn-danger" id="deleteConfirmBtn">确认删除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>后台管理页面</p>
+    </div>
+  </footer>
+
+  <script src="resources-data.js"></script>
+  <script src="data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
