@@ -3,116 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>资源分享站 - 免费游戏电子书软件资源</title>
+  <title>大伟的太空补给站</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 头部 -->
-  <header class="site-header">
-    <div class="container">
-      <a href="index.html" class="site-logo">
-        <div class="logo-icon">📦</div>
-        <span id="site-name">资源分享站</span>
-      </a>
-      <nav class="site-nav">
-        <a href="index.html">首页</a>
-        <a href="admin.html">管理</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <h1 id="site-title">资源分享站</h1>
-      <p id="site-desc">免费游戏、电子书、软件资源收集分享</p>
-    </div>
-  </section>
-
-  <!-- 搜索栏 -->
   <div class="container">
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="搜索资源名称、描述或标签...">
-    </div>
+    <!-- 标题区域 -->
+    <header class="header">
+      <div class="logo">🚀</div>
+      <h1 class="title">大伟的太空补给站</h1>
+      <p class="subtitle">常用工具一键直达</p>
+    </header>
 
-    <!-- 分类筛选 -->
-    <div class="category-filter" id="categoryFilter">
-      <!-- JS 动态渲染 -->
-    </div>
+    <!-- 分类标签 -->
+    <nav class="category-nav">
+      <button class="category-btn active" data-category="all">全部</button>
+      <button class="category-btn" data-category="system">🛠️ 系统工具</button>
+      <button class="category-btn" data-category="dev">💻 开发工具</button>
+      <button class="category-btn" data-category="office">📄 办公软件</button>
+    </nav>
 
-    <!-- 排序 + 计数 -->
-    <div class="sort-bar">
-      <span id="resultCount"></span>
-      <select id="sortSelect">
-        <option value="date-desc">最新发布</option>
-        <option value="date-asc">最早发布</option>
-        <option value="title">按名称</option>
-      </select>
-    </div>
+    <!-- 工具卡片 -->
+    <main class="tools-grid" id="toolsGrid">
+      <!-- 由 JS 动态渲染 -->
+    </main>
 
-    <!-- 推荐区 -->
-    <div class="resource-grid" id="featuredGrid" style="margin-bottom: var(--space-lg);">
-      <!-- JS 动态渲染 -->
-    </div>
-
-    <!-- 资源卡片网格 -->
-    <div class="resource-grid" id="resourceGrid">
-      <!-- JS 动态渲染 -->
-    </div>
-
-    <!-- 空状态 -->
-    <div class="empty-state" id="emptyState" style="display:none;">
-      <div class="empty-icon">📭</div>
-      <h3>没有找到匹配的资源</h3>
-      <p>试试换个关键词或分类筛选</p>
-    </div>
-
-    <!-- 加载骨架屏 -->
-    <div class="skeleton-grid" id="skeletonGrid">
-      <!-- JS 动态生成 -->
-    </div>
-
-    <!-- 错误状态 -->
-    <div class="error-state" id="errorState" style="display:none;">
-      <div class="error-icon">⚠️</div>
-      <h3>加载失败</h3>
-      <p id="errorMsg">数据加载失败</p>
-      <button class="btn btn-primary" onclick="location.reload()">重新加载</button>
-    </div>
+    <!-- 页脚 -->
+    <footer class="footer">
+      <p>Made with ❤️ by 大伟</p>
+    </footer>
   </div>
 
-  <!-- 详情模态框 -->
-  <div class="modal-overlay" id="detailModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span style="font-weight:600;">资源详情</span>
-        <button class="modal-close" id="modalClose">✕</button>
-      </div>
-      <div class="modal-image" id="modalImage">
-        <!-- JS 动态填充 -->
-      </div>
-      <div class="modal-body" id="modalBody">
-        <!-- JS 动态填充 -->
-      </div>
-    </div>
-  </div>
-
-  <!-- 返回顶部 -->
-  <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
-
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
-
-  <!-- 页脚 -->
-  <footer class="site-footer">
-    <div class="container">
-      <p id="footer-text"></p>
-    </div>
-  </footer>
-
-  <script src="resources-data.js"></script>
-  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
